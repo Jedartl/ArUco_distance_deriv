@@ -5,7 +5,20 @@ import numpy as np # Import Numpy library
 def PPDisstance(A, B):
   return ((A[0] + B[0])**2 + (A[1] + B[1])**2)**0.5
 
-
+'''
+	long double GetArea() {
+		long double area = 0;
+		for(int i = 0; i < vertices.size(); i++) {
+			area += vertices[i].GetX() * vertices[(i + 1) % vertices.size()].GetY() - vertices[(i + 1) % vertices.size()].GetX() * vertices[i].GetY();
+		}
+		return abs(area) / 2;
+	}
+'''
+def PolygonArea(vertices):
+  area = 0
+  for i in range(len(vertices)):
+    area += vertices[i][0] * vertices[(i+1) % len(vertices)][1] - vertices[(i+1) % len(vertices)][0] * vertices[i][1]
+  return abs(area) / 2
 
 desired_aruco_dictionary = "DICT_ARUCO_ORIGINAL"
  
@@ -100,7 +113,16 @@ def main():
           0.5, (0, 255, 0), 2)
         print(top_left)
         distanceN = PPDisstance(top_left, bottom_left)
+        vertices = []
+        vertices.append(top_left)
+        vertices.append(top_right)
+        vertices.append(bottom_right)
+        vertices.append(bottom_left)
+
+        areaOfPolygon = PolygonArea(vertices)
         cv2.putText(frame, str(distanceN),  (top_left[0], top_left[1] - 40), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+        cv2.putText(frame, str(areaOfPolygon),  (top_left[0], top_left[1] - 60), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+
   
     # Display the resulting frame
     cv2.imshow('frame',frame)
