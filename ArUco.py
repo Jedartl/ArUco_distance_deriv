@@ -1,6 +1,9 @@
-import cv2 # Import the OpenCV library
+import cv2
+from cv2 import putText # Import the OpenCV library
 import numpy as np # Import Numpy library
 
+def PPDisstance(A, B):
+  return ((A[0] + B[0])**2 + (A[1] + B[1])**2)**0.5
 
 
 
@@ -44,7 +47,7 @@ def main():
   this_aruco_parameters = cv2.aruco.DetectorParameters_create()
    
   # Start the video stream
-  cap = cv2.VideoCapture(1)
+  cap = cv2.VideoCapture(2)
   
   
 
@@ -95,6 +98,9 @@ def main():
           (top_left[0], top_left[1] - 15),
           cv2.FONT_HERSHEY_SIMPLEX,
           0.5, (0, 255, 0), 2)
+        print(top_left)
+        distanceN = PPDisstance(top_left, bottom_left)
+        cv2.putText(frame, str(distanceN),  (top_left[0], top_left[1] - 40), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
   
     # Display the resulting frame
     cv2.imshow('frame',frame)
