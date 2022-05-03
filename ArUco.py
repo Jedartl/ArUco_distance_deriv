@@ -1,5 +1,4 @@
 import cv2
-from cv2 import sqrt
 import numpy as np
 from cv2 import putText # Import the OpenCV library
 import numpy as np # Import Numpy library
@@ -60,7 +59,7 @@ def main():
   if ARUCO_DICT.get(desired_aruco_dictionary, None) is None:
     print("[INFO] ArUCo tag of '{}' is not supported".format(
       args["type"]))
-    sys.exit()
+    sys.exit(0)
      
   # Load the ArUco dictionary
   print("[INFO] detecting '{}' markers...".format(
@@ -69,7 +68,9 @@ def main():
   this_aruco_parameters = cv2.aruco.DetectorParameters_create()
    
   # Start the video stream
-  cap = cv2.VideoCapture(0)
+  url = "http://10.22.148.159:8080/video"
+  cap = cv2.VideoCapture(url)
+  #cap = cv2.VideoCapture(0)
   
   
 
@@ -132,14 +133,14 @@ def main():
         vertices.append(bottom_left)
 
         areaOfPolygon = PolygonArea(vertices)
-        distancia = sqrt((9.7*10**7)/(areaOfPolygon))
+        distancia = round((7*10**7)**0.52246603/(areaOfPolygon**0.52246603))
 
         #cv2.putText(frame, str(distanceN),  (top_left[0], top_left[1] - 40), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
         #cv2.putText(frame, str(areaOfPolygon),  (top_left[0], top_left[1] - 60), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
-        cv2.putText(frame, str(distancia[0]) + " cm",  (top_left[0], top_left[1] - 60), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+        cv2.putText(frame, str(distancia) + " cm",  (top_left[0], top_left[1] - 60), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
         #print(areaOfPolygon)
         #print(perimetro)
-        #print(distancia)
+        #qqqqprint(distancia)
 
   
     # Display the resulting frame
