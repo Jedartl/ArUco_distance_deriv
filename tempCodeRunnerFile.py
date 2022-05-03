@@ -1,0 +1,1 @@
+        distancia = (np.log(areaOfPolygon/257627))/(-0.036)

@@ -1,4 +1,5 @@
 import cv2
+import numpy as np
 from cv2 import putText # Import the OpenCV library
 import numpy as np # Import Numpy library
 
@@ -7,7 +8,7 @@ def PPDisstance(A, B):
 
 '''
 	long double GetArea() {
-		long double area = 0;
+		long double area = 0;q
 		for(int i = 0; i < vertices.size(); i++) {
 			area += vertices[i].GetX() * vertices[(i + 1) % vertices.size()].GetY() - vertices[(i + 1) % vertices.size()].GetX() * vertices[i].GetY();
 		}
@@ -19,6 +20,7 @@ def PolygonArea(vertices):
   for i in range(len(vertices)):
     area += vertices[i][0] * vertices[(i+1) % len(vertices)][1] - vertices[(i+1) % len(vertices)][0] * vertices[i][1]
   return abs(area) / 2
+
 
 desired_aruco_dictionary = "DICT_ARUCO_ORIGINAL"
  
@@ -60,7 +62,7 @@ def main():
   this_aruco_parameters = cv2.aruco.DetectorParameters_create()
    
   # Start the video stream
-  cap = cv2.VideoCapture(2)
+  cap = cv2.VideoCapture(0)
   
   
 
@@ -87,12 +89,15 @@ def main():
         # Extract the marker corners
         corners = marker_corner.reshape((4, 2))
         (top_left, top_right, bottom_right, bottom_left) = corners
-         
         # Convert the (x,y) coordinate pairs to integers
         top_right = (int(top_right[0]), int(top_right[1]))
         bottom_right = (int(bottom_right[0]), int(bottom_right[1]))
         bottom_left = (int(bottom_left[0]), int(bottom_left[1]))
         top_left = (int(top_left[0]), int(top_left[1]))
+        def shape():
+          figurativa = ''
+          return figurativa
+
          
         # Draw the bounding box of the ArUco detection
         cv2.line(frame, top_left, top_right, (0, 255, 0), 2)
@@ -111,8 +116,8 @@ def main():
           (top_left[0], top_left[1] - 15),
           cv2.FONT_HERSHEY_SIMPLEX,
           0.5, (0, 255, 0), 2)
-        print(top_left)
         distanceN = PPDisstance(top_left, bottom_left)
+        perimetro = PPDisstance(top_left, bottom_left) + PPDisstance(top_left, top_right) + PPDisstance(top_right, bottom_right) + PPDisstance(bottom_left, bottom_right)
         vertices = []
         vertices.append(top_left)
         vertices.append(top_right)
@@ -120,8 +125,14 @@ def main():
         vertices.append(bottom_left)
 
         areaOfPolygon = PolygonArea(vertices)
-        cv2.putText(frame, str(distanceN),  (top_left[0], top_left[1] - 40), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
-        cv2.putText(frame, str(areaOfPolygon),  (top_left[0], top_left[1] - 60), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+        distancia = round((7*10**7)**0.52246603/(areaOfPolygon**0.52246603))
+
+        #cv2.putText(frame, str(distanceN),  (top_left[0], top_left[1] - 40), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+        #cv2.putText(frame, str(areaOfPolygon),  (top_left[0], top_left[1] - 60), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+        cv2.putText(frame, str(distancia) + " cm",  (top_left[0], top_left[1] - 60), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+        print(areaOfPolygon)
+        print(perimetro)
+        print(distancia)
 
   
     # Display the resulting frame
@@ -139,3 +150,14 @@ def main():
 if __name__ == '__main__':
   print(__doc__)
   main()
+
+#Prueba valores de pixeles
+# cantidad = 40
+# disxpix = np.zeros((2,cantidad))
+# for i in range (cantidad -1):
+#   disxpix[0][i] = input("distancia")
+#   disxpix[1][i] = input("pixeles")
+# for i in range(cantidad -1):
+#   print("distancia", i, disxpix[0][i])
+#   print("pixeles", i, disxpix[1][i])
+# print(PolygonArea(vertices))
