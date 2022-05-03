@@ -1,4 +1,5 @@
 import cv2
+from cv2 import sqrt
 import numpy as np
 from cv2 import putText # Import the OpenCV library
 import numpy as np # Import Numpy library
@@ -59,7 +60,7 @@ def main():
   if ARUCO_DICT.get(desired_aruco_dictionary, None) is None:
     print("[INFO] ArUCo tag of '{}' is not supported".format(
       args["type"]))
-    sys.exit(0)
+    sys.exit()
      
   # Load the ArUco dictionary
   print("[INFO] detecting '{}' markers...".format(
@@ -131,11 +132,11 @@ def main():
         vertices.append(bottom_left)
 
         areaOfPolygon = PolygonArea(vertices)
-        distancia = round((7*10**7)**0.52246603/(areaOfPolygon**0.52246603))
+        distancia = sqrt((9.7*10**7)/(areaOfPolygon))
 
         #cv2.putText(frame, str(distanceN),  (top_left[0], top_left[1] - 40), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
         #cv2.putText(frame, str(areaOfPolygon),  (top_left[0], top_left[1] - 60), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
-        cv2.putText(frame, str(distancia) + " cm",  (top_left[0], top_left[1] - 60), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+        cv2.putText(frame, str(distancia[0]) + " cm",  (top_left[0], top_left[1] - 60), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
         #print(areaOfPolygon)
         #print(perimetro)
         #print(distancia)
@@ -164,7 +165,7 @@ if __name__ == '__main__':
   print(__doc__)
   main()
   
-  with open('mapa.pickle', 'wb') as handle:
+  with open('mapa2.pickle', 'wb') as handle:
       pickle.dump(mapa, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
 #Prueba valores de pixeles

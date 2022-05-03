@@ -5,5 +5,5 @@ import copy
 
 
 mapa = pickle.load(open("mapa.pickle", "rb"))
-
-print(mapa)
+for element in mapa["values"]:
+    print(element[1])
