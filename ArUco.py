@@ -165,7 +165,7 @@ if __name__ == '__main__':
   print(__doc__)
   main()
   
-  with open('mapa2.pickle', 'wb') as handle:
+  with open('mapa.pickle', 'wb') as handle:
       pickle.dump(mapa, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
 #Prueba valores de pixeles
