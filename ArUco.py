@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 from cv2 import putText # Import the OpenCV library
 import numpy as np # Import Numpy library
+import pickle
 
 def PPDisstance(A, B):
   return ((A[0] + B[0])**2 + (A[1] + B[1])**2)**0.5
@@ -23,7 +24,11 @@ def PolygonArea(vertices):
 
 
 desired_aruco_dictionary = "DICT_ARUCO_ORIGINAL"
- 
+
+centimeters = 20
+areaOfPolygon = 0
+
+mapa = {"values":[]}
 # The different ArUco dictionaries built into the OpenCV library. 
 ARUCO_DICT = {
   "DICT_4X4_50": cv2.aruco.DICT_4X4_50,
@@ -46,6 +51,7 @@ ARUCO_DICT = {
 }
   
 def main():
+  global centimeters, areaOfPolygonq
   """
   Main method of the program.
   """
@@ -130,9 +136,9 @@ def main():
         #cv2.putText(frame, str(distanceN),  (top_left[0], top_left[1] - 40), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
         #cv2.putText(frame, str(areaOfPolygon),  (top_left[0], top_left[1] - 60), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
         cv2.putText(frame, str(distancia) + " cm",  (top_left[0], top_left[1] - 60), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
-        print(areaOfPolygon)
-        print(perimetro)
-        print(distancia)
+        #print(areaOfPolygon)
+        #print(perimetro)
+        #print(distancia)
 
   
     # Display the resulting frame
@@ -140,7 +146,14 @@ def main():
           
     # If "q" is pressed on the keyboard, 
     # exit this loop
+    if cv2.waitKey(1) & 0xFF == ord('f'):
+      mapa["values"].append((centimeters, areaOfPolygon))
+      print((centimeters, areaOfPolygon))
+      centimeters += 1
+      print("agregar muestra")
+      
     if cv2.waitKey(1) & 0xFF == ord('q'):
+      print("bye")
       break
   
   # Close down the video stream
@@ -150,6 +163,9 @@ def main():
 if __name__ == '__main__':
   print(__doc__)
   main()
+  
+  with open('mapa.pickle', 'wb') as handle:
+      pickle.dump(mapa, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
 #Prueba valores de pixeles
 # cantidad = 40
