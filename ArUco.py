@@ -68,7 +68,9 @@ def main():
   this_aruco_parameters = cv2.aruco.DetectorParameters_create()
    
   # Start the video stream
-  cap = cv2.VideoCapture(0)
+  url = "http://10.22.148.159:8080/video"
+  cap = cv2.VideoCapture(url)
+  #cap = cv2.VideoCapture(0)
   
   
 
@@ -138,7 +140,7 @@ def main():
         cv2.putText(frame, str(distancia) + " cm",  (top_left[0], top_left[1] - 60), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
         #print(areaOfPolygon)
         #print(perimetro)
-        #print(distancia)
+        #qqqqprint(distancia)
 
   
     # Display the resulting frame
